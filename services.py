@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import pytz
-from pydantic import json
+import json
 
 def recursive_city_search(areas, city_name):
     for area in areas:
@@ -26,13 +26,13 @@ def recursive_role_search(categories, role_name):
                 return role['id']
     return None
 
-def sort_vacancies(vacancies):
-
-    def get_salary_from(vacancy):
-        salary = vacancy.get("salary")
-        if isinstance(salary, dict):
-            return salary.get("from") or float("inf")
-        return float("inf")
-
-    sorted_vacancies = sorted(vacancies.get("items", []), key=get_salary_from)
-    return json.dumps(sorted_vacancies, indent=4, ensure_ascii=False)
+# def sort_vacancies(vacancies):
+#
+#     def get_salary_from(vacancy):
+#         salary = vacancy.get("salary")
+#         if isinstance(salary, dict):
+#             return salary.get("from") or float("inf")
+#         return float("inf")
+#
+#     sorted_vacancies = sorted(vacancies.get("items", []), key=get_salary_from)
+#     return json.dumps(sorted_vacancies, indent=4, ensure_ascii=False)

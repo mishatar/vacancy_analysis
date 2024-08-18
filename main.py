@@ -1,5 +1,5 @@
 import json
-from services import recursive_city_search, get_datetime, recursive_role_search, sort_vacancies
+from services import recursive_city_search, get_datetime, recursive_role_search
 from aiohttp import ClientSession, ClientResponseError
 from fastapi import FastAPI, HTTPException
 
@@ -37,11 +37,13 @@ async def send_data(request: RequestModel):
     cur_param = {
         "area": int(city_id),
         "professional_role": int(role_id),
-        "date_from": get_datetime()
+        "date_from": get_datetime(),
+        "order_by": "salary_asc",
+        "currency": "RUR"
     }
     vacancies_response_data = await fetch_data(f'{base_url}/vacancies', cur_param)
 
     try:
-        return sort_vacancies(vacancies_response_data)
+        return vacancies_response_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error while sorting vacancies: {str(e)}")
