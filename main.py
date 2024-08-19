@@ -1,5 +1,5 @@
 import json
-from services import recursive_city_search, get_datetime, recursive_role_search
+from services import recursive_city_search, get_datetime, recursive_role_search, upload_to_sheet
 from aiohttp import ClientSession, ClientResponseError
 from fastapi import FastAPI, HTTPException
 
@@ -10,6 +10,7 @@ base_url = 'https://api.hh.ru'
 
 app = FastAPI(title='Анализ вакансий')
 
+
 async def fetch_data(url: str, params: dict = None) -> dict:
     async with ClientSession() as session:
         try:
@@ -17,9 +18,9 @@ async def fetch_data(url: str, params: dict = None) -> dict:
                 response.raise_for_status()
                 return await response.json()
         except ClientResponseError as e:
-            raise HTTPException(status_code=500, detail=f"Error while fetching data from {url}: {str(e)}")
+            raise HTTPException(status_code=502, detail=f"Error while fetching data from {url}: {str(e)}")
         except json.JSONDecodeError:
-            raise HTTPException(status_code=500, detail=f"Error decoding JSON from {url}")
+            raise HTTPException(status_code=502, detail=f"Error decoding JSON from {url}")
 
 @app.post("/")
 async def send_data(request: RequestModel):
@@ -44,6 +45,7 @@ async def send_data(request: RequestModel):
     vacancies_response_data = await fetch_data(f'{base_url}/vacancies', cur_param)
 
     try:
-        return vacancies_response_data
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error while sorting vacancies: {str(e)}")
+        upload_to_sheet(vacancies_response_data)
+    except Exception:
+        raise HTTPException(status_code=500, detail="Failed to load data into table")
+    return vacancies_response_data
