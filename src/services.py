@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import pytz
-from google_sheet import GoogleSheet
+from src.google_sheet import GoogleSheet
 
 
 def recursive_city_search(areas, city_name):
@@ -33,14 +33,3 @@ def recursive_role_search(categories, role_name):
 def upload_to_sheet(data):
     google = GoogleSheet(data)
     google.get_values()
-
-# def sort_vacancies(vacancies):
-#
-#     def get_salary_from(vacancy):
-#         salary = vacancy.get("salary")
-#         if isinstance(salary, dict):
-#             return salary.get("from") or float("inf")
-#         return float("inf")
-#
-#     sorted_vacancies = sorted(vacancies.get("items", []), key=get_salary_from)
-#     return json.dumps(sorted_vacancies, indent=4, ensure_ascii=False)

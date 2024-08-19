@@ -2,4 +2,5 @@
 .venv
 venv
 venv/
-credentials.json
+src/credentials.json
+.postgres

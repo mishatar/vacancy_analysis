@@ -1,10 +1,10 @@
 import json
-from services import recursive_city_search, get_datetime, recursive_role_search, upload_to_sheet
+from src.services import recursive_city_search, get_datetime, recursive_role_search, upload_to_sheet
 from aiohttp import ClientSession, ClientResponseError
 from fastapi import FastAPI, HTTPException
 
 
-from schemas import RequestModel
+from src.schemas import RequestModel
 
 base_url = 'https://api.hh.ru'
 
