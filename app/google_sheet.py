@@ -19,7 +19,7 @@ class GoogleSheet:
 
     @staticmethod
     def get_creds():
-        with open('credentials.json') as f:
+        with open('app/credentials.json') as f:
             credentials_info = json.load(f)
 
         creds = Credentials.from_service_account_info(credentials_info,
@@ -54,7 +54,6 @@ class GoogleSheet:
                 (item.get("salary") or {}).get("to", '')
             ]
             self.values.append(result)
-
         creds = self.get_creds()
         self.clear_sheet(creds)
         self.write_to_google_sheet(creds)

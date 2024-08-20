@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import pytz
-from src.google_sheet import GoogleSheet
+from app.google_sheet import GoogleSheet
 
 
 def recursive_city_search(areas, city_name):
