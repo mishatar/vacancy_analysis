@@ -8,3 +8,5 @@
  - POSTGRES_DB_HOST_PORT = 5432
  - POSTGRES_DB_HOST = db
  - POSTGRES_DB_NAME = <имя бд>
+
+## Также добавить в /app файл credentials.json с конфиогом Google Sheets API
