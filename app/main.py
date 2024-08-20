@@ -5,6 +5,7 @@ from sqlalchemy import and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.database import get_async_session
+from app.google_sheet import GoogleSheet
 from app.models import Vacancy
 from app.services import recursive_city_search, get_datetime, recursive_role_search, upload_to_sheet
 from aiohttp import ClientSession, ClientResponseError
@@ -72,7 +73,8 @@ async def send_data(request: RequestModel, session: AsyncSession = Depends(get_a
         raise HTTPException(status_code=500, detail=f"Failed to load data into Postgres: {str(e)}")
 
     try:
-        upload_to_sheet(vacancies_response_data)
+        google = GoogleSheet(vacancies_response_data)
+        google.get_values()
     except Exception:
         raise HTTPException(status_code=500, detail="Failed to load data into table")
 
@@ -81,7 +83,7 @@ async def send_data(request: RequestModel, session: AsyncSession = Depends(get_a
 
 @app.get("/get_vacancies_by_filter", response_model=List[VacancyResponse])
 async def get_vacancies_by_filter(
-    filter: VacancyFilter = Depends(),
+    filter: VacancyFilter,
     session: AsyncSession = Depends(get_async_session)
 ):
     query = select(Vacancy)

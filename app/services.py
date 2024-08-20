@@ -28,8 +28,3 @@ def recursive_role_search(categories, role_name):
             if role['name'] == role_name:
                 return role['id']
     return None
-
-
-def upload_to_sheet(data):
-    google = GoogleSheet(data)
-    google.get_values()

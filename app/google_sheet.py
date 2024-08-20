@@ -22,8 +22,10 @@ class GoogleSheet:
         with open('app/credentials.json') as f:
             credentials_info = json.load(f)
 
-        creds = Credentials.from_service_account_info(credentials_info,
-                                                      scopes=['https://www.googleapis.com/auth/spreadsheets'])
+        creds = Credentials.from_service_account_info(
+            credentials_info,
+            scopes=['https://www.googleapis.com/auth/spreadsheets']
+        )
         return creds
 
     def clear_sheet(self, creds):
@@ -39,8 +41,9 @@ class GoogleSheet:
         body = {
             'values': self.values
         }
-        result = sheet.values().update(spreadsheetId=self.spreadsheet_id, range=self.range_name, valueInputOption='RAW',
-                                       body=body).execute()
+        result = sheet.values().update(
+            spreadsheetId=self.spreadsheet_id, range=self.range_name, valueInputOption='RAW', body=body
+        ).execute()
         return result
 
     def get_values(self):
